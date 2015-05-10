@@ -1,0 +1,99 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>EBSpain</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="load">
+    <div></div>
+    <div>중</div>
+    <div>는</div>
+    <div>오</div>
+    <div>러</div>
+    <div>불</div>
+    <div>를</div>
+    <div>터</div>
+    <div>이</div>
+    <div>데</div>
+</div>
+
+<div class="flip-container">
+    <div class="flipper">
+        <div class="front" onclick="EBCard.flipCard()">
+            <div class="content">
+                <div class="wrapper">
+                    <div class="box question"></div>
+                </div>
+            </div>
+        </div>
+        <div class="back" onclick="EBCard.restoreCard()">
+            <div class="content">
+                <div class="wrapper">
+                    <div class="box answer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+var EBCard = EBCard || {}; (function(m){
+
+var q = [], a = [];
+
+m.init = function() {
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (http.readyState === 4 && http.status === 200) {
+            http.responseText.split('\n').map(function(v){
+                v.match(/^#.*/) ? q.push(v) : v.match(/^!.*/) && a.push(v);
+            });
+
+            document.getElementById('load').style.display = 'none';
+            m.render();
+        }
+    };
+    http.open("get", "https://dl.dropboxusercontent.com/u/39952651/s_text.txt", true);
+    http.send();
+};
+
+m.flipCard = function() {
+    document.getElementsByClassName('flipper')[0].className = 'flipper flipped';
+};
+
+m.restoreCard = function() {
+    m.render();
+    document.getElementsByClassName('flipper')[0].className = 'flipper';
+};
+
+m.render = function() {
+    var r = Math.floor(Math.random() * q.length),
+        eq = document.getElementsByClassName('question')[0],
+        ea = document.getElementsByClassName('answer')[0];
+
+    eq.style.opacity = 0;
+    ea.style.opacity = 0;
+    eq.innerHTML = q[r].replace(/^#\s/, '');
+    ea.innerHTML = a[r].replace(/^!\s/, '');
+    setTimeout(function(){
+        eq.style.opacity = 1;
+        ea.style.opacity = 1;
+    }, 200);
+};
+
+})(EBCard);
+
+document.addEventListener( "DOMContentLoaded", EBCard.init, false );
+
+</script>
+
+</body>
+</html>

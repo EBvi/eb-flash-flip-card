@@ -1,0 +1,131 @@
+$background-color: #056171;
+$front-color: #FDC756;
+$back-color: #E7271C;
+
+body, html {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: $background-color;
+
+    -webkit-font-smoothing: subpixel-antialiased;
+    transform: translateZ(0);
+    transform-style: preserve-3d;
+    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-backface-visibility: hidden;
+}
+
+.flip-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    perspective: 800px;
+
+    .flipper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: transform .4s;
+        transform-style: preserve-3d;
+        cursor: pointer;
+        z-index: 10;
+
+        &.flipped { transform: rotateY( 180deg ); }
+
+        &>div {
+            position: absolute;
+            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .front {
+            background: $front-color;
+           .box { border: 40px $front-color solid; }
+        }
+        .back {
+            transform: rotateY( 180deg );
+            background: $back-color;
+            color: #fff;
+            .box { border: 40px $back-color solid; }
+        }
+        .content {
+            position: static;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .wrapper {
+            display: table;
+            width: 100%;
+            height: 100%;
+        }
+        .box {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 2em;
+        }
+    }
+}
+
+#load {
+  position: absolute;
+  width: 550px;
+  height: 100px;
+  left: 50%;
+  top: 45%;
+  margin-left: -275px;
+  overflow: visible;
+  -webkit-user-select: none;
+  user-select: none;
+  z-index: 99;
+  font-size: 2em;
+  font-weight: 100;
+
+  div {
+      position: absolute;
+      width: 60px;
+      height: 50px;
+      text-align: center;
+      opacity: 0;
+      animation: move 1.5s linear infinite;
+      -webkit-transform: rotate(180deg);
+      color: #02436E;
+    }
+}
+
+@for $i from 1 through 10 {
+    #load div:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.15}s;
+    }
+}
+
+@keyframes move {
+    0% {
+        left: 0;
+        transform: rotate(180deg);
+        opacity: 0;
+    }
+    35% {
+        left: 35%;
+        transform: rotate(0deg) scale(1);
+        opacity:1;
+    }
+    65% {
+        left: 65%;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        left: 100%;
+        transform: rotate(-180deg);
+        opacity: 0;
+    }
+}
